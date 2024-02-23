@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content="Todo App"/>
+        <title>Todo App</title>
+        <link rel="stylesheet" href="todo-css.css"/>
+        <script src="todo-js.js" defer></script>
+    </head>
+    <body class="">
+        <header>
+            <div class="logo-container">
+                <h1 class="logo">TODO</h1>
+                <div id="darkmode-container">
+                    <img class="moon" src="images/icon-moon.svg" alt="icon of a moon, click to toggle dark mode"/>
+                    <img class="sun" src="images/icon-sun.svg" alt="icon of a sun, click to toggle dark mode"/>
+                </div>
+            </div>
+            <div class="input-container">
+                <div class="circle-div">
+                    <div class="first-circle"></div>
+                </div>
+                <input id="input" type="text" placeholder="Create a new todo..."/>
+            </div>
+        </header>
+        <main>
+            <div class="todo-container">
+                <div class="task-container completed" draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">Complete online Javascript course</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                <div class="task-container"draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">Jog around the park 3x</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                <div class="task-container" draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">10 minutes meditation</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                <div class="task-container" draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">Read for 1 hour</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                <div class="task-container" draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">Pick up groceries</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                <div class="task-container" draggable="true">
+                    <div class="circle-div">
+                        <div class="circle"></div>
+                    </div>
+                    <p class="task">Complete Todo App on Frontend Mentor</p>
+                    <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+                </div>
+                
+            </div>
+            <div id="control-panel">
+                <p id="item-count" class="gray-text">5 items left</p>
+                <div class="filter-container">
+                    <p id="all" class="filter selected">All</p>
+                    <p id="active" class="filter">Active</p>
+                    <p id="completed" class="filter">Completed</p>
+                </div>
+                <p id="clear" class="gray-text">Clear Completed</p>
+            </div>
+            <p class="gray-text instructions">Drag and drop to reorder list</p>
+        </main>
+    </body>
+</html>
