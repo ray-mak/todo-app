@@ -11,35 +11,42 @@ const input = document.getElementById("input");
 const clearCompletedBtn = document.getElementById("clear");
 
 //save tasks to localstorage
-const taskData = JSON.parse(localStorage.getItem("data")) || [];
-
+let taskData = JSON.parse(localStorage.getItem("data"));
+if (!Array.isArray(taskData)) {
+    taskData = [];
+}
 //add new task
 const addTask = () => {
-    const taskName = input.value;
-    taskData.unshift(taskName);
+    const taskObj = {
+        completed: false,
+        id: Date.now(),
+        title: input.value,
+    };
+    taskData.push(taskObj);
     localStorage.setItem("data", JSON.stringify(taskData));
-    const taskHTML = `
-        <div class="task-container"draggable="true">
+    todoContainer.innerHTML += `
+        <div id="${taskObj.id}" class="task-container" draggable="true">
             <div class="circle-div">
                 <div class="circle"></div>
             </div>
-            <p class="task">${taskName}</p>
+            <p class="task">${taskObj.title}</p>
             <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
-        </div>`;
-    todoContainer.innerHTML += taskHTML;   
+        </div>`; 
 }
 
 const updateTaskContainer = () => {
-    for (let i = 0; i < taskData.length; i++) {
-        todoContainer.innerHTML += `
-        <div class="task-container"draggable="true">
-            <div class="circle-div">
-                <div class="circle"></div>
-            </div>
-            <p class="task">${taskData[i]}</p>
-            <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
-        </div>`
-    }
+    taskData.forEach(
+        ({completed, id, title}) => {
+            const isCompleted = completed ? "completed" : "";
+            todoContainer.innerHTML += `
+            <div id="${id}" class="task-container ${isCompleted}" draggable="true">
+                <div class="circle-div">
+                    <div class="circle"></div>
+                </div>
+                <p class="task">${title}</p>
+                <img class="cross-icon" src="images/icon-cross.svg" alt="icon of an X, click to remove task"/>
+            </div>`
+    })
 }
 
 if (taskData.length) {
@@ -60,7 +67,12 @@ input.addEventListener("keypress", (e) => {
 const clearCompleted = () => {
     for (let i = 0; i < taskContainer.length; i++) {
         if (taskContainer[i].classList.contains("completed")) {
+            const taskId = Number(taskContainer[i].id);
+            const taskIndex = taskData.findIndex((item) => item.id === taskId);
+            taskData.splice(taskIndex, 1);
+            localStorage.setItem("data", JSON.stringify(taskData));
             taskContainer[i].remove();
+            i--;
         }
     }
 }
@@ -148,11 +160,11 @@ const showAll = () => {
 
 allFilter.addEventListener("click", showAll);
 
-//Show message when all tasks are cleared
+//Delete tasts and show message when all tasks are cleared
 todoContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("cross-icon")) {
-        const taskName = e.target.closest(".task-container").querySelector(".task").textContent;
-        const taskIndex = taskData.indexOf(taskName);
+        const taskId = Number(e.target.closest(".task-container").id);
+        const taskIndex = taskData.findIndex((item) => item.id === taskId);
         if (taskIndex !== -1) {
             taskData.splice(taskIndex, 1);
             localStorage.setItem("data", JSON.stringify(taskData));
@@ -165,7 +177,7 @@ todoContainer.addEventListener("click", (e) => {
     }
 })
 
-//delete or mark tasks completed
+//Mark tasks completed. Also show cross icon when hovering over task
 todoContainer.addEventListener("mouseover", (e) => {
     if (e.target.closest(".task-container")) {
         e.target.closest(".task-container").querySelector(".cross-icon").style.display = "block";
@@ -181,6 +193,12 @@ todoContainer.addEventListener("mouseout", (e) => {
 todoContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("circle")) {
         e.target.closest(".task-container").classList.toggle("completed");
+        const taskId = Number(e.target.closest(".task-container").id);
+        const taskIndex = taskData.findIndex((item) => item.id === taskId);
+        if (taskIndex !== -1) {
+            taskData[taskIndex].completed = !taskData[taskIndex].completed;
+            localStorage.setItem("data", JSON.stringify(taskData));
+        }
     }
 })
 
